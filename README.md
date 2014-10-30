@@ -325,9 +325,9 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
   }
   ```
 
-### controllerAs with vm
+### controllerAs with self
 
-  - Use a capture variable for `this` when using the `controllerAs` syntax. Choose a consistent variable name such as `vm`, which stands for ViewModel.
+  - Use a capture variable for `this` when using the `controllerAs` syntax. Choose a consistent variable name such as `self`, which stands for this.
   
   *Why?*: The `this` keyword is contextual and when used within a function inside a controller may change its context. Capturing the context of `this` avoids encountering this problem.
 
@@ -342,9 +342,10 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
   ```javascript
   /* recommended */
   function Customer() {
-      var vm = this;
-      vm.name = {};
-      vm.sendMessage = function() { };
+      var self = this;
+
+      self.name = {};
+      self.sendMessage = function() { };
   }
   ```
 
@@ -352,15 +353,15 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
     
   ```javascript
   /* jshint validthis: true */
-  var vm = this;
+  var self = this;
   ```
    
-  Note: When creating watches in a controller using `controller as`, you can watch the `vm.*` member using the following syntax. (Create watches with caution as they add more load to the digest cycle.)
+  Note: When creating watches in a controller using `controller as`, you can watch the `self.*` member using the following syntax. (Create watches with caution as they add more load to the digest cycle.)
 
   ```javascript
-  $scope.$watch('vm.title', function(current, original) {
-      $log.info('vm.title was %s', original);
-      $log.info('vm.title is now %s', current);
+  $scope.$watch('self.title', function(current, original) {
+      $log.info('self.title was %s', original);
+      $log.info('self.title is now %s', current);
   });
   ```
 
@@ -417,40 +418,6 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
   ```
 
     ![Controller Using "Above the Fold"](https://raw.githubusercontent.com/johnpapa/angularjs-styleguide/master/assets/above-the-fold-1.png)
-
-  Note: If the function is a 1 liner consider keeping it right up top, as long as readability is not affected.
-
-  ```javascript
-  /* avoid */
-  function Sessions(data) {
-      var vm = this;
-
-      vm.gotoSession = gotoSession;
-      vm.refresh = function() {
-          /** 
-           * lines 
-           * of
-           * code
-           * affects
-           * readability
-           */
-      };
-      vm.search = search;
-      vm.sessions = [];
-      vm.title = 'Sessions';
-  ```
-
-  ```javascript
-  /* recommended */
-  function Sessions(dataservice) {
-      var vm = this;
-
-      vm.gotoSession = gotoSession;
-      vm.refresh = dataservice.refresh; // 1 liner is OK
-      vm.search = search;
-      vm.sessions = [];
-      vm.title = 'Sessions';
-  ```
 
 ### Function Declarations to Hide Implementation Details
 
@@ -1056,9 +1023,9 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
 
 ### Provide a Unique Directive Prefix
 
-  - Provide a short, unique and descriptive directive prefix such as `acmeSalesCustomerInfo` which is declared in HTML as `acme-sales-customer-info`.
+  - Provide a short, unique and descriptive directive prefix such as `resSalesCustomerInfo` which is declared in HTML as `res-sales-customer-info`.
 
-    *Why?*: The unique short prefix identifies the directive's context and origin. For example a prefix of `cc-` may indicate that the directive is part of a CodeCamper app while `acme-` may indicate a directive for the Acme company. 
+    *Why?*: The unique short prefix identifies the directive's context and origin. For example a prefix of `cc-` may indicate that the directive is part of a CodeCamper app while `res-` may indicate a directive for The Resumator. 
 
     Note: Avoid `ng-` as these are reserved for AngularJS directives.Research widely used directives to avoid naming conflicts, such as `ion-` for the [Ionic Framework](http://ionicframework.com/). 
 
@@ -1214,11 +1181,11 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
       vm.avengers = [];
       vm.title = 'Avengers';
 
-      activate();
+      initialize();
 
       ////////////
 
-      function activate() {
+      function initialize() {
           return dataservice.getAvengers().then(function(data) {
               vm.avengers = data;
               return vm.avengers;
@@ -1750,9 +1717,9 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
     
 ### Controller Name Suffix
 
-  - Append the controller name with the suffix `Controller` or with no suffix. Choose 1, not both.
+  - Append the controller name with the suffix `Ctrl` or with no suffix. Choose 1, not both.
 
-    *Why?*: The `Controller` suffix is more commonly used and is more explicitly descriptive.
+    *Why?*: The `Ctrl` suffix is more commonly used and is more explicitly descriptive.
 
     *Why?*: Omitting the suffix is more succinct and the controller is often easily identifiable even without the suffix.
 
@@ -1777,7 +1744,7 @@ While this guide explains the *what*, *why* and *how*, I find it helpful to see 
     // avengers.controller.js
     angular
         .module
-        .controller('AvengersController', AvengersController);
+        .controller('AvengersCtrl', AvengersController);
 
     function AvengersController(){ }
     ```
